@@ -16,11 +16,11 @@ def speak_text(text, language='ro'):
     tts.save("/tmp/speech.mp3")
 
     # make the file faster
-    os.system("ffmpeg -i /tmp/speech.mp3 -filter:a 'atempo=1.5' /tmp/speech.mp3")
+    os.system("ffmpeg -i /tmp/speech.mp3 -filter:a 'atempo=1.2' /tmp/speech2.mp3")
 
     # Initialize pygame mixer
     pygame.mixer.init()
-    pygame.mixer.music.load("/tmp/speech.mp3")
+    pygame.mixer.music.load("/tmp/speech2.mp3")
     pygame.mixer.music.play()
 
     # Wait for playback to finish
@@ -29,6 +29,7 @@ def speak_text(text, language='ro'):
 
     # Clean up temporary file
     os.remove("/tmp/speech.mp3")
+    os.remove("/tmp/speech2.mp3")
 
 
 def main():
