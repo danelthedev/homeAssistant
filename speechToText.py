@@ -3,11 +3,11 @@ import speech_recognition as sr
 
 
 class RomanianSpeechToText:
-    def __init__(self, keyword='Ionel'):
+    def __init__(self, keyword='John'):
         self.keyword = keyword
         self.recognizer = sr.Recognizer()
 
-    def listen_from_microphone(self, timeout=10, language='ro-RO'):
+    def listen_from_microphone(self, timeout=10, language='en-US'):
         with sr.Microphone(device_index=1) as source:
             print("Listening...")
 

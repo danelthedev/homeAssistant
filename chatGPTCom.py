@@ -18,7 +18,7 @@ class GPTCommunicator:
             max_tokens=50,
             model='gpt-3.5-turbo',
             messages=[
-                {"role":"system", "content": "Ești un asistent virtual cu numele " + self.nume + ". Vei oferi răspunsuri scurte și la obiect. O să folosești mereu diacriticele în mod corect."},
+                {"role":"system", "content": "You are a home assistant whose name is " + self.nume + ". You'll provide short and clear answers."},
                 {"role":"user", "content": text}
             ]
         )
