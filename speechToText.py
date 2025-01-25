@@ -7,7 +7,7 @@ class RomanianSpeechToText:
         self.keyword = keyword
         self.recognizer = sr.Recognizer()
 
-    def listen_from_microphone(self, timeout=10, language='en-US'):
+    def listen_from_microphone(self, timeout=60, language='en-US'):
         with sr.Microphone(device_index=1) as source:
             print("Listening...")
 
@@ -19,9 +19,9 @@ class RomanianSpeechToText:
                 audio = self.recognizer.listen(source, timeout=timeout)
 
                 # Recognize speech using Google Speech Recognition
-                text = self.recognizer.recognize_google(audio, language=language)
-                if text.startswith(self.keyword):
-                    return text
+                text: str = self.recognizer.recognize_google(audio, language=language)
+                if self.keyword in text:
+                    return text[text.rfind(self.keyword):]
 
             except sr.UnknownValueError:
                 print("Nu s-a putut recunoaște speech")
