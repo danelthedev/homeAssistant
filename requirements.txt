@@ -5,3 +5,5 @@ openai
 SpeechRecognition
 pyaudio
 sounddevice
+pillow
+tk
