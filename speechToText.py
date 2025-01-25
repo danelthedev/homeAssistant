@@ -7,14 +7,7 @@ class RomanianSpeechToText:
         self.keyword = keyword
         self.recognizer = sr.Recognizer()
 
-    def listen_from_microphone(self, timeout=5, language='ro-RO'):
-        """
-        Capture audio from microphone and convert to text
-
-        :param timeout: Maximum recording time in seconds
-        :param language: Language code for Romanian
-        :return: Recognized text or None if no speech detected
-        """
+    def listen_from_microphone(self, timeout=10, language='ro-RO'):
         with sr.Microphone(device_index=1) as source:
             print("Listening...")
 
