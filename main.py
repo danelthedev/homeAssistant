@@ -38,9 +38,9 @@ def main():
     # print(res)
     # speak_text(res)
 
-    speechToText = SpeechToText(numeAsistent)
+    speechToText = RomanianSpeechToText(numeAsistent)
     while True:
-        mesajUser = speechToText.get_text()
+        mesajUser = speechToText.listen_from_microphone()
 
         if mesajUser is not None and mesajUser.startswith(numeAsistent):
             print(mesajUser.lower())
