@@ -39,11 +39,11 @@ def main():
     # speak_text(res)
 
     speechToText = SpeechToText(numeAsistent)
-    while True:
-        mesajUser = speechToText.get_text()
-
-        if mesajUser is not None and mesajUser.startswith(numeAsistent):
-            print(mesajUser.lower())
+    # while True:
+    #     mesajUser = speechToText.get_text()
+    #
+    #     if mesajUser is not None and mesajUser.startswith(numeAsistent):
+    #         print(mesajUser.lower())
 
 
 if __name__ == "__main__":
