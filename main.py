@@ -33,6 +33,7 @@ def main():
     text = input("Enter the text you want to speak: ")
 
     res = gptCom.sendMessage(text)
+    print(res)
     speak_text(res)
 
 
