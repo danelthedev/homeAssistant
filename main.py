@@ -15,6 +15,9 @@ def speak_text(text, language='ro'):
     tts = gTTS(text=text, lang=language)
     tts.save("/tmp/speech.mp3")
 
+    # make the file faster
+    os.system("ffmpeg -i /tmp/speech.mp3 -filter:a 'atempo=1.5' /tmp/speech.mp3")
+
     # Initialize pygame mixer
     pygame.mixer.init()
     pygame.mixer.music.load("/tmp/speech.mp3")
