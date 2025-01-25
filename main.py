@@ -1,4 +1,4 @@
-import time
+from pygame import time
 
 from chatGPTCom import GPTCommunicator
 from speechToText import *
@@ -32,7 +32,7 @@ def main():
                     # Alternate talking images while audio plays
                     while True:
                         display.show_talking()
-                        time.sleep(0.5)
+                        time.wait(1000)
                         if not pygame.mixer.music.get_busy():
                             break
 
