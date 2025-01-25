@@ -1,11 +1,9 @@
 from pygame import time
-
 from chatGPTCom import GPTCommunicator
 from speechToText import *
 from tts import *
 from assistantDisplay import AssistantDisplay
 import threading
-
 
 def main():
     numeAsistent = 'John'
@@ -27,22 +25,25 @@ def main():
                 res = gptCom.sendMessage(mesajUser)
                 print(res)
 
-                # Use a separate thread to manage audio and visuals
-                def play_audio_with_visuals():
-                    # Alternate talking images while audio plays
-                    while True:
-                        display.show_talking()
-                        time.wait(1000)
-                        if not pygame.mixer.music.get_busy():
-                            break
+                # Flag to control when to switch to silent mode
+                is_talking = True
 
-                # Start the visual thread and play audio
-                visual_thread = threading.Thread(target=play_audio_with_visuals)
-                visual_thread.start()
-                speak_text(res)
+                # Play audio in a separate thread
+                def play_audio():
+                    speak_text(res)
+                    nonlocal is_talking
+                    is_talking = False
 
-                # Wait for the visual thread to finish
-                visual_thread.join()
+                audio_thread = threading.Thread(target=play_audio)
+                audio_thread.start()
+
+                # Display talking visuals while the assistant is "talking"
+                while is_talking:
+                    display.show_talking()
+                    time.wait(500)  # Update visuals every 500ms
+
+                # Ensure audio thread finishes
+                audio_thread.join()
 
     except KeyboardInterrupt:
         print("Exiting...")
