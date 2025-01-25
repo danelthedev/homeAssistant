@@ -11,8 +11,8 @@ class AssistantDisplay:
     def __init__(self, assistant_name='John'):
         # Setup main window
         self.root = tk.Tk()
-        self.root.attributes('-fullscreen', True)
-        self.root.configure(bg='black')
+        # self.root.attributes('-fullscreen', True)
+        self.root.configure(bg='white')
 
         # Load images
         base_path = 'resources'
