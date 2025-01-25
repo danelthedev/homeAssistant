@@ -32,8 +32,8 @@ def speak_text(text, language='ro'):
 
 
 def main():
-    numeAsistent = 'Cornel'
-    gptCom: GPTCommunicator = GPTCommunicator('Cornel')
+    numeAsistent = 'test'
+    gptCom: GPTCommunicator = GPTCommunicator('test')
 
     speechToText = RomanianSpeechToText(numeAsistent)
     while True:
