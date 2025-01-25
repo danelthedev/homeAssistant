@@ -1,7 +1,7 @@
 import os
 from gtts import gTTS
 import pygame
-
+from chatGPTCom import GPTCommunicator
 
 def speak_text(text, language='ro'):
     """
@@ -28,8 +28,12 @@ def speak_text(text, language='ro'):
 
 
 def main():
+    gptCom: GPTCommunicator = GPTCommunicator('Cornel')
+
     text = input("Enter the text you want to speak: ")
-    speak_text(text)
+
+    res = gptCom.sendMessage(text)
+    speak_text(res)
 
 
 if __name__ == "__main__":
