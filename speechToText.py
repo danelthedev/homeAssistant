@@ -14,7 +14,7 @@ class RomanianSpeechToText:
         :param language: Language code for Romanian
         :return: Recognized text or None if no speech detected
         """
-        with sr.Microphone(device_index=2) as source:
+        with sr.Microphone(device_index=1) as source:
             print("Listening...")
 
             try:
