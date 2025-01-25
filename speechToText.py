@@ -11,7 +11,7 @@ class SpeechToText:
 
     def get_text(self):
         #wait for keyword to be said, then record
-        with sr.Microphone(device_index=3) as source:
+        with sr.Microphone(device_index=2) as source:
             audio = self.r.listen(source, 2, 10)
             try:
                 text = self.r.recognize_google(audio, language='ro-RO')
