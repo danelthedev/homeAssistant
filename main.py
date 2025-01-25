@@ -1,18 +1,24 @@
+import time
+
 from chatGPTCom import GPTCommunicator
 from speechToText import *
 from tts import *
 from assistantDisplay import AssistantDisplay
+import threading
 
 
 def main():
     numeAsistent = 'John'
-    display = AssistantDisplay(numeAsistent)
 
-    gptCom: GPTCommunicator = GPTCommunicator(numeAsistent)
+    gptCom = GPTCommunicator(numeAsistent)
     speechToText = SpeechToText(numeAsistent)
+    display = AssistantDisplay()
 
-    def process_audio():
-        try:
+    try:
+        while True:
+            # Show silent state initially
+            display.show_silent()
+
             mesajUser = speechToText.listen_from_microphone()
 
             if mesajUser is not None and mesajUser.startswith(numeAsistent):
@@ -21,20 +27,27 @@ def main():
                 res = gptCom.sendMessage(mesajUser)
                 print(res)
 
-                # Speak with animation
-                display.speak_with_animation(res)
+                # Use a separate thread to manage audio and visuals
+                def play_audio_with_visuals():
+                    # Alternate talking images while audio plays
+                    while True:
+                        display.show_talking()
+                        time.sleep(0.5)
+                        if not pygame.mixer.music.get_busy():
+                            break
 
-        except Exception as e:
-            print(f"Error in audio processing: {e}")
+                # Start the visual thread and play audio
+                visual_thread = threading.Thread(target=play_audio_with_visuals)
+                visual_thread.start()
+                speak_text(res)
 
-        # Schedule next audio processing
-        display.root.after(100, process_audio)
+                # Wait for the visual thread to finish
+                visual_thread.join()
 
-    # Start audio processing
-    display.root.after(100, process_audio)
-
-    # Run the display
-    display.run()
+    except KeyboardInterrupt:
+        print("Exiting...")
+    finally:
+        display.cleanup()
 
 
 if __name__ == "__main__":

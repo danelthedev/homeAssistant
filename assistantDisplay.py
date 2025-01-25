@@ -1,83 +1,49 @@
-import threading
+import pygame
 import time
-import tkinter as tk
-from PIL import Image, ImageTk
-import os
-
-from tts import speak_text
-
 
 class AssistantDisplay:
-    def __init__(self, assistant_name='John'):
-        # Setup main window
-        self.root = tk.Tk()
-        # self.root.attributes('-fullscreen', True)
-        self.root.configure(bg='white')
+    def __init__(self):
+        """
+        Initialize the display window and load resources.
+        """
+        pygame.init()
+
+        # Set up the window
+        self.screen = pygame.display.set_mode((0, 0), pygame.RESIZABLE)
+        pygame.display.set_caption("Assistant Display")
 
         # Load images
-        base_path = 'resources'
-        self.images = {
-            'silent': self.load_image(os.path.join(base_path, 'silent.png')),
-            'talking1': self.load_image(os.path.join(base_path, 'talking1.png')),
-            'talking2': self.load_image(os.path.join(base_path, 'talking2.png'))
-        }
+        self.silent_image = pygame.image.load("resources/silent.png")
+        self.talking_images = [
+            pygame.image.load("resources/talking1.png"),
+            pygame.image.load("resources/talking2.png"),
+        ]
 
-        # Create label to display images
-        self.image_label = tk.Label(self.root, bg='black')
-        self.image_label.pack(expand=True, fill=tk.BOTH)
+        self.current_image_index = 0
 
-        # Set initial state to silent
-        self.set_silent_state()
+    def show_silent(self):
+        """
+        Display the silent image on the window, stretched to fill the window.
+        """
+        scaled_image = pygame.transform.scale(self.silent_image, self.screen.get_size())
+        self.screen.blit(scaled_image, (0, 0))
+        pygame.display.flip()
 
-        # Talking animation variables
-        self.is_talking = False
-        self.stop_talking_event = threading.Event()
+    def show_talking(self):
+        """
+        Alternate between talking images on the window, stretched to fill the window.
+        This ensures smooth alternation using a fixed frame update interval.
+        """
+        start_time = time.time()
+        while pygame.mixer.music.get_busy():
+            self.current_image_index = (self.current_image_index + 1) % len(self.talking_images)
+            scaled_image = pygame.transform.scale(self.talking_images[self.current_image_index], self.screen.get_size())
+            self.screen.blit(scaled_image, (0, 0))
+            pygame.display.flip()
+            time.sleep(0.5 - ((time.time() - start_time) % 0.5))
 
-    def load_image(self, path):
-        """Load and resize image to fit screen"""
-        try:
-            image = Image.open(path)
-            image = image.resize((self.root.winfo_screenwidth(), self.root.winfo_screenheight()), Image.LANCZOS)
-            return ImageTk.PhotoImage(image)
-        except Exception as e:
-            print(f"Error loading image {path}: {e}")
-            return None
-
-    def set_silent_state(self):
-        """Display silent image"""
-        self.image_label.configure(image=self.images['silent'])
-
-    def talking_animation(self):
-        """Animate talking state"""
-        talking_images = [self.images['talking1'], self.images['talking2']]
-        index = 0
-        while not self.stop_talking_event.is_set():
-            self.root.after(0, lambda i=index: self.image_label.configure(image=talking_images[i]))
-            index = 1 - index  # Toggle between 0 and 1
-            time.sleep(0.3)
-
-    def speak_with_animation(self, text):
-        """Speak text with talking animation"""
-        # Stop any previous animation
-        self.stop_talking_event.set()
-
-        # Reset event for new animation
-        self.stop_talking_event = threading.Event()
-
-        # Start talking animation
-        animation_thread = threading.Thread(target=self.talking_animation)
-        animation_thread.start()
-
-        # Speak text
-        speak_text(text)
-
-        # Stop animation
-        self.stop_talking_event.set()
-        animation_thread.join()
-
-        # Return to silent state
-        self.root.after(0, self.set_silent_state)
-
-    def run(self):
-        """Start the display loop"""
-        self.root.mainloop()
+    def cleanup(self):
+        """
+        Clean up resources and quit pygame.
+        """
+        pygame.quit()
