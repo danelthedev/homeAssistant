@@ -1,40 +1,34 @@
 import os
-import sys
+from gtts import gTTS
+import pygame
 
 
-def speak_text(text):
+def speak_text(text, language='en'):
     """
-    Convert text to speech using pyttsx3 library
+    Convert text to speech using Google Text-to-Speech
 
     Prerequisites:
-    1. Install pyttsx3: 
-       sudo apt-get update
-       sudo apt-get install espeak
-       pip3 install pyttsx3
+    pip3 install gtts pygame
     """
-    try:
-        import pyttsx3
-    except ImportError:
-        print("Error: pyttsx3 library not found. Please install it using 'pip3 install pyttsx3'")
-        sys.exit(1)
+    # Create audio file
+    tts = gTTS(text=text, lang=language)
+    tts.save("/tmp/speech.mp3")
 
-    # Initialize the TTS engine
-    engine = pyttsx3.init()
+    # Initialize pygame mixer
+    pygame.mixer.init()
+    pygame.mixer.music.load("/tmp/speech.mp3")
+    pygame.mixer.music.play()
 
-    # Optional: Adjust speech properties
-    engine.setProperty('rate', 150)  # Speed of speech
-    engine.setProperty('volume', 0.9)  # Volume (0.0 to 1.0)
+    # Wait for playback to finish
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
 
-    # Speak the text
-    engine.say(text)
-    engine.runAndWait()
+    # Clean up temporary file
+    os.remove("/tmp/speech.mp3")
 
 
 def main():
-    # Get text input from user
     text = input("Enter the text you want to speak: ")
-
-    # Speak the text
     speak_text(text)
 
 
