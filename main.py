@@ -30,13 +30,7 @@ def speak_text(text, language='ro'):
 
 def main():
     numeAsistent = 'Cornel'
-    # gptCom: GPTCommunicator = GPTCommunicator('Cornel')
-    #
-    # text = input("Enter the text you want to speak: ")
-    #
-    # res = gptCom.sendMessage(text)
-    # print(res)
-    # speak_text(res)
+    gptCom: GPTCommunicator = GPTCommunicator('Cornel')
 
     speechToText = RomanianSpeechToText(numeAsistent)
     while True:
@@ -44,6 +38,10 @@ def main():
 
         if mesajUser is not None and mesajUser.startswith(numeAsistent):
             print(mesajUser.lower())
+            res = gptCom.sendMessage(mesajUser)
+            print(res)
+            speak_text(res)
+
 
 
 if __name__ == "__main__":
