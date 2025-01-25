@@ -4,3 +4,4 @@ pygame
 openai
 SpeechRecognition
 pyaudio
+sounddevice
