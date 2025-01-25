@@ -1,16 +1,42 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import os
+import sys
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def speak_text(text):
+    """
+    Convert text to speech using pyttsx3 library
+
+    Prerequisites:
+    1. Install pyttsx3: 
+       sudo apt-get update
+       sudo apt-get install espeak
+       pip3 install pyttsx3
+    """
+    try:
+        import pyttsx3
+    except ImportError:
+        print("Error: pyttsx3 library not found. Please install it using 'pip3 install pyttsx3'")
+        sys.exit(1)
+
+    # Initialize the TTS engine
+    engine = pyttsx3.init()
+
+    # Optional: Adjust speech properties
+    engine.setProperty('rate', 150)  # Speed of speech
+    engine.setProperty('volume', 0.9)  # Volume (0.0 to 1.0)
+
+    # Speak the text
+    engine.say(text)
+    engine.runAndWait()
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main():
+    # Get text input from user
+    text = input("Enter the text you want to speak: ")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # Speak the text
+    speak_text(text)
+
+
+if __name__ == "__main__":
+    main()
