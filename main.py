@@ -4,7 +4,7 @@ import pygame
 from chatGPTCom import GPTCommunicator
 from speechToText import *
 
-def speak_text(text, language='ro'):
+def speak_text(text, language='en'):
     """
     Convert text to speech using Google Text-to-Speech
 
