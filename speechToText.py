@@ -3,7 +3,7 @@ import speech_recognition as sr
 
 
 class RomanianSpeechToText:
-    def __init__(self, keyword='Cornel'):
+    def __init__(self, keyword='Ionel'):
         self.keyword = keyword
         self.recognizer = sr.Recognizer()
 
