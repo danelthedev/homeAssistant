@@ -3,7 +3,7 @@ from gtts import gTTS
 import pygame
 
 
-def speak_text(text, language='en'):
+def speak_text(text, language='ro'):
     """
     Convert text to speech using Google Text-to-Speech
 
